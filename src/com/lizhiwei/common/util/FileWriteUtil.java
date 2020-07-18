@@ -41,7 +41,6 @@ public class FileWriteUtil {
     /**
      * 写入 返回值为文件的offset
      *
-     * @param line
      * @return
      * @throws IOException
      */
