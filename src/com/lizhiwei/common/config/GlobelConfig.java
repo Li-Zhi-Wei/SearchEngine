@@ -73,5 +73,9 @@ public class GlobelConfig {
      * 持久化 索引文件名
      */
     private static final String PERSISTENCE_FILE_INDEX_FILE_NAME = "\\PERSISTENCE_IDX.bin";
+    /**
+     * 各个线程每次检查状态最大等待毫秒
+     */
+    public static final long THREAD_CHECK_LOOP_PER_MS = 10 * 1000L;
 
 }
