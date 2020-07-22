@@ -8,15 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ProcessChainContext {
 
-    public ProcessChainContext(String url, String doc,Long id ) {
-        this.url = url;
-        this.doc = doc;
-        this.id=id;
-    }
-    public ProcessChainContext(String url, String doc ) {
-        this.url = url;
-        this.doc = doc;
-    }
     /**
      * url
      */
@@ -29,6 +20,20 @@ public class ProcessChainContext {
      * id
      */
     private Long id;
+    /**
+     * 上下文参数
+     */
+    private ConcurrentHashMap<String, Object> context = new ConcurrentHashMap<String, Object>();// 上下文参数
+
+    public ProcessChainContext(String url, String doc,Long id ) {
+        this.url = url;
+        this.doc = doc;
+        this.id=id;
+    }
+    public ProcessChainContext(String url, String doc ) {
+        this.url = url;
+        this.doc = doc;
+    }
 
     /**
      * URL
@@ -39,6 +44,10 @@ public class ProcessChainContext {
         return url;
     }
 
+    /**
+     * ID
+     * @return
+     */
     public Long getId() {
         return id;
     }
@@ -52,10 +61,34 @@ public class ProcessChainContext {
         return doc;
     }
 
+
+    /**
+     * 获取上下文参数
+     *
+     * @param key
+     * @return
+     */
+    public Object get(String key) {
+        return context.get(key);
+    }
+
+    /**
+     * 设置上下文参数
+     *
+     * @param key
+     * @param val
+     */
+    public void set(String key, Object val) {
+        context.put(key, val);
+    }
+
+
+
     @Override
     public String toString() {
-        return "ProcessChainContext";
+        return "ProcessChainContext [url=" + url + ", doc=" + doc + ", context=" + context + "]";
     }
+
 
 
 }
