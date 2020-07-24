@@ -157,7 +157,7 @@ public class FileQueue {
      * @throws Exception
      */
     public void rewind() throws Exception {
-
+        setReadIdx(0);
         readBuff = readChannel.map(FileChannel.MapMode.READ_WRITE, 0, PAGE_SIZE);
         readIndexBuff = readIndexChannel.map(FileChannel.MapMode.READ_WRITE, 0, PAGE_SIZE);
     }
@@ -190,7 +190,7 @@ public class FileQueue {
             long page = offset / PAGE_SIZE;
             readIndexBuff = writeIndexChannel.map(FileChannel.MapMode.READ_WRITE, page * PAGE_SIZE, PAGE_SIZE);
         }
-
+        setReadIdx(readIdx + 1);
         return b;
     }
 
@@ -220,7 +220,7 @@ public class FileQueue {
             left -= length;
             // 判断是否需要跳到下一个映射
             if (left == 0) {
-                long page = s / PAGE_SIZE;
+                long page = (s + readPos) / PAGE_SIZE;
                 readBuff = readChannel.map(FileChannel.MapMode.READ_WRITE, page * PAGE_SIZE, PAGE_SIZE);
                 pos = 0;
                 left = PAGE_SIZE;
@@ -248,7 +248,7 @@ public class FileQueue {
         long s1 = offset % PAGE_SIZE;
         // 计算页码
         long page = offset / PAGE_SIZE;
-        MappedByteBuffer indexBuff = readIndexChannel.map(FileChannel.MapMode.READ_WRITE,  PAGE_SIZE, PAGE_SIZE);
+        MappedByteBuffer indexBuff = readIndexChannel.map(FileChannel.MapMode.READ_WRITE, page * PAGE_SIZE, PAGE_SIZE);
         indexBuff.position((int) s1);
         // 起始位置和结束位置
         long s = indexBuff.getLong();
@@ -271,7 +271,7 @@ public class FileQueue {
         byte[] r = new byte[size];
         // long start =s;
         long page = s / PAGE_SIZE;
-        MappedByteBuffer randomReadBuff = readChannel.map(FileChannel.MapMode.READ_WRITE, PAGE_SIZE, PAGE_SIZE);
+        MappedByteBuffer randomReadBuff = readChannel.map(FileChannel.MapMode.READ_WRITE, page * PAGE_SIZE, PAGE_SIZE);
         // 当前映射偏移量
         long pos = s % PAGE_SIZE;
         // 当前映射剩余空间
@@ -286,7 +286,7 @@ public class FileQueue {
             left -= length;
             // 判断是否需要跳到下一个映射位置
             if (left == 0 && r.length > readPos) {
-                randomReadBuff = readChannel.map(FileChannel.MapMode.READ_WRITE,  PAGE_SIZE, PAGE_SIZE);
+                randomReadBuff = readChannel.map(FileChannel.MapMode.READ_WRITE, ++page * PAGE_SIZE, PAGE_SIZE);
                 pos = 0;
                 left = PAGE_SIZE;
             }
@@ -317,13 +317,13 @@ public class FileQueue {
             // 获取当前页写入的起始位置
             // 计算当前页剩余多少
             // 最大能放的长度
-            long length = left > size ? left : size;
+            long length = left > size ? size : left;
             writeBuff.position((int) s1);
             writeBuff.put(b, (int) pos, (int) length);
             // 指针重设
             pos += length;
             start += length;
-            size += length;
+            size -= length;
             // 本次完成 判断是否进行跨页
             s1 = start % PAGE_SIZE;// 偏移量
             if (s1 == 0) {
@@ -331,7 +331,7 @@ public class FileQueue {
                 // 计算旧页码
                 long page = start / PAGE_SIZE;
                 // 调整页码
-                writeBuff = writeChannel.map(FileChannel.MapMode.READ_WRITE, PAGE_SIZE, PAGE_SIZE);
+                writeBuff = writeChannel.map(FileChannel.MapMode.READ_WRITE, page * PAGE_SIZE, PAGE_SIZE);
                 // s1归零
                 // s1 = 0;
             }
@@ -339,6 +339,10 @@ public class FileQueue {
         }
         // 写入索引文件
         writeIndex(writeIdx, writeIdx + b.length);
+        // 更新指针文件
+        setWriteIdx(writeIdx + b.length);
+        // 队列大小增加
+        setQueueSize(queueSize + 1);
         return queueSize;
     }
 
@@ -355,7 +359,7 @@ public class FileQueue {
         writeIndexBuff.putLong(s);
         writeIndexBuff.putLong(e);
         // 设置索引指针
-
+        setIndexIdx(indexIdx + LONG_SIZE * 2);
         s1 = indexIdx % PAGE_SIZE;
         if (s1 == 0) {
             // 需要切换新的页了
@@ -414,6 +418,13 @@ public class FileQueue {
      * @throws Exception
      */
     private void initWritePoint() throws Exception {
+        // 顺序写文件映射
+        long pageWrite = writeIdx / PAGE_SIZE;// 页码
+        writeBuff = writeChannel.map(FileChannel.MapMode.READ_WRITE, pageWrite * PAGE_SIZE, PAGE_SIZE);
+
+        // 写索引文件映射
+        long pageWriteIdx = indexIdx / PAGE_SIZE;// 页码
+        writeIndexBuff = writeIndexChannel.map(FileChannel.MapMode.READ_WRITE, pageWriteIdx * PAGE_SIZE, PAGE_SIZE);
 
     }
 
@@ -423,7 +434,136 @@ public class FileQueue {
      * @throws Exception
      */
     private void initReadPoint() throws Exception {
+        if (readIdx == 0) {
+            // 未读取的时候 直接从头开始
+            readIndexBuff = readIndexChannel.map(FileChannel.MapMode.READ_WRITE, 0, PAGE_SIZE);
+            readBuff = readChannel.map(FileChannel.MapMode.READ_WRITE, 0, PAGE_SIZE);
+        } else {
 
+            // 获取读索引文件 前一个映射
+            long readOffset = (readIdx - 1) * 2 * LONG_SIZE;
+            long pageReadIdx = readOffset / PAGE_SIZE;// 页码
+            readIndexBuff = readIndexChannel.map(FileChannel.MapMode.READ_WRITE, pageReadIdx * PAGE_SIZE, PAGE_SIZE);
+
+            // 顺序读文件映射
+            // 根据前一个读索引获取读指针应该在的位置
+            long s1 = readOffset % PAGE_SIZE;
+            readIndexBuff.position((int) s1);
+            // 起始位置
+            readIndexBuff.getLong();
+            long e = readIndexBuff.getLong();
+            long pageRead = e / PAGE_SIZE;// 页码
+            readBuff = readChannel.map(FileChannel.MapMode.READ_WRITE, pageRead * PAGE_SIZE, PAGE_SIZE);
+            if (2 * LONG_SIZE + s1 == PAGE_SIZE) {
+                // 因为读索引读取的是前一个的 如果当前索引页读取到底了 就需要切换到下一页
+                readIndexBuff = readIndexChannel.map(FileChannel.MapMode.READ_WRITE, ++pageReadIdx * PAGE_SIZE, PAGE_SIZE);
+            }
+        }
+    }
+
+    /**
+     * 清空队列<br>
+     * 这里只是重设指针,没有真正的删除文件
+     */
+    public void clear() {
+        setQueueSize(0);
+        setIndexIdx(0);
+        setReadIdx(0);
+        setWriteIdx(0);
+    }
+
+    /**
+     * 设置队列大小
+     *
+     * @param v
+     */
+    private void setQueueSize(long v) {
+        // 第0个保存队列大小 第1个保存写索引指针 第2个long保存写指针 第3个long保存读指针
+        pointBuff.position(0);
+        pointBuff.putLong(v);
+        this.queueSize = v;
+    }
+
+    /**
+     * 设置写索引指针索引位置
+     *
+     * @param v
+     */
+    private void setIndexIdx(long v) {
+        // 第0个保存队列大小 第1个保存写索引指针 第2个long保存写指针 第3个long保存读指针
+        pointBuff.position(LONG_SIZE);
+        pointBuff.putLong(v);
+        this.indexIdx = v;
+
+    }
+
+    /**
+     * 设置顺序写指针索引位置
+     *
+     * @param v
+     */
+    private void setWriteIdx(long v) {
+        // 第0个保存队列大小 第1个保存写索引指针 第2个long保存写指针 第3个long保存读指针
+        pointBuff.position(LONG_SIZE * 2);
+        pointBuff.putLong(v);
+        this.writeIdx = v;
+    }
+
+    /**
+     * 设置顺序读指针索引位置
+     *
+     * @param v
+     */
+    private void setReadIdx(long v) {
+        // 第0个保存队列大小 第1个保存写索引指针 第2个long保存写指针 第3个long保存读指针
+        pointBuff.position(LONG_SIZE * 3);
+        pointBuff.putLong(v);
+        this.readIdx = v;
+    }
+
+    /**
+     * 获取未消费的数据数量
+     *
+     * @return
+     */
+    public long getLeftNum() {
+        return queueSize - readIdx;
+    }
+
+    /**
+     * 队列总大小 包含已消费的
+     *
+     * @return
+     */
+    public long getQueueSize() {
+        return queueSize;
+    }
+
+    /**
+     * 获取顺序读指针的位置
+     *
+     * @return
+     */
+    public long getReadIdx() {
+        return readIdx;
+    }
+
+    /**
+     * 获取顺序写指针的位置
+     *
+     * @return
+     */
+    public long getWriteIdx() {
+        return writeIdx;
+    }
+
+    /**
+     * 获取索引指针的位置
+     *
+     * @return
+     */
+    public long getIndexIdx() {
+        return indexIdx;
     }
 
 
