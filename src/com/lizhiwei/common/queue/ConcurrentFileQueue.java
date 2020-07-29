@@ -3,6 +3,7 @@ package com.lizhiwei.common.queue;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 同步文件队列
  * @Author LiZhiWei
  * @Date 2020/7/25
  */

@@ -6,6 +6,12 @@ package com.lizhiwei.common.util;
  */
 public class BaseUtil {
 
+    /**
+     * 字符串超过指定长度就截取，后面变成...
+     * @param str
+     * @param length
+     * @return
+     */
     public static String cutStr(String str, int length) {
         String finalStr ;
         if (null == str || str.length() <= length) {

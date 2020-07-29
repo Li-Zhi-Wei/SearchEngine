@@ -5,10 +5,12 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
+ * 文件队列 不支持并发
  * @Author LiZhiWei
  * @Date 2020/7/23
  */
 public class FileQueue {
+
     // 每页大小 每次映射文件的大小 不能大于INT_MAX 不能小于16 并且必须是16的倍数
     private static final int PAGE_SIZE =  4 * 1024 ;
     // LONG的大小 即每个地址的大小

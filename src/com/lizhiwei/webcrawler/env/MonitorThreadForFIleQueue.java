@@ -1,5 +1,10 @@
 package com.lizhiwei.webcrawler.env;
 
+import com.lizhiwei.analyse.tempindex.TempIndexMap;
+import com.lizhiwei.common.config.GlobelConfig;
+import com.lizhiwei.common.queue.SearchEngineFileQueue;
+import com.lizhiwei.common.util.SelfLogger;
+
 /**
  * @Author LiZhiWei
  * @Date 2020/7/21
@@ -30,6 +35,9 @@ public class MonitorThreadForFIleQueue {
                     // 分析队列满
                     ProcessGlobelContext.setStatus(ProcessRunStatus.persistence);
                 }
+                SelfLogger.log("监控信息:queueAnalyse size:" + queueAnalyse.getQueue().getQueueSize() + ";queueLinks size:"
+                        + queueLinks.getQueue().getQueueSize() + ";tempIndexMap key:" + tempIndexMap.getKeySize()
+                        + ",tempIndexMap value:" + tempIndexMap.getValueSize() + ".");
                 if (ProcessGlobelContext.getStatus() == ProcessRunStatus.persistence) {
                     // 开启持久化后就不再输出监控信息
                     break;
@@ -38,6 +46,13 @@ public class MonitorThreadForFIleQueue {
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    // 检测是否开启
+    private void firstCheck() {
+        if (queueAnalyse.getQueue().getQueueSize() < thresholdAnalyse) {
+            ProcessGlobelContext.setStatus(ProcessRunStatus.start);
         }
     }
 
