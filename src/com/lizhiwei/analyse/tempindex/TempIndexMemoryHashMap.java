@@ -15,6 +15,7 @@ public class TempIndexMemoryHashMap<k,v> implements TempIndexMap<k,v> {
     ConcurrentHashMap<k, Collection<v>> map = new ConcurrentHashMap<k, Collection<v>>();//map
     AtomicInteger keySize = new AtomicInteger(0);//key的大小
     AtomicInteger valueSize = new AtomicInteger(0);//value的大小
+
     @Override
     public void put(k key, v value) {
         //使用线程安全的set 同时还能帮助去重
