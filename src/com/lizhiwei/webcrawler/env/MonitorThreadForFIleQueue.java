@@ -6,6 +6,7 @@ import com.lizhiwei.common.queue.SearchEngineFileQueue;
 import com.lizhiwei.common.util.SelfLogger;
 
 /**
+ * 文件队列监视线程
  * @Author LiZhiWei
  * @Date 2020/7/21
  */

@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
+ * 调用MD5计算hash
  * @Author LiZhiWei
  * @Date 2020/7/30
  */

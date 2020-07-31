@@ -1,6 +1,7 @@
 package com.lizhiwei.webcrawler.duplicationfilter;
 
 /**
+ * URL过滤器接口
  * @Author LiZhiWei
  * @Date 2020/7/30
  */

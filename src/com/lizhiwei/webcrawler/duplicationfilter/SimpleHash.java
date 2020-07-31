@@ -1,6 +1,7 @@
 package com.lizhiwei.webcrawler.duplicationfilter;
 
 /**
+ * 自己实现的简单hash
  * @Author LiZhiWei
  * @Date 2020/7/30
  */
