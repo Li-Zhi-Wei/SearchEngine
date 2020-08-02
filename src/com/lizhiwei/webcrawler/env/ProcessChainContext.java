@@ -16,7 +16,7 @@ public class ProcessChainContext {
     /**
      * 文档内容
      */
-    private String doc;// 文档内容
+    private String doc;
     /**
      * id
      */
