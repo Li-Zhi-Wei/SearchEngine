@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 获取HTML关键信息的工具类
  * @Author LiZhiWei
  * @Date 2020/8/2
  */

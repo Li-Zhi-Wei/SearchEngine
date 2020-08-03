@@ -1,6 +1,6 @@
 package com.lizhiwei.webcrawler.processchain;
 
-import com.lizhiwei.webcrawler.env.ProcessChain;
+import com.lizhiwei.common.processchain.ProcessChain;
 
 /**
  * 爬虫服务的链

@@ -1,10 +1,13 @@
 package com.lizhiwei.common.search;
 
+import com.lizhiwei.analyse.tag.*;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 格式化HTML工具类
  * @Author LiZhiWei
  * @Date 2020/8/2
  */
@@ -47,23 +50,7 @@ public class HTMLFormatUtil {
         // 利用所有标签构造出AC自动机
         // System.out.println(tagWords);
         tagMatch = new ACAutomatonForTag(tagWords);
-        // // 不需要的标签
-        // char[] ifStart = "<!--[if ".toCharArray();
-        // char[] ifEnd = "<![endif]-->".toCharArray();
-        // char[] scriptStart = "<script".toCharArray();
-        // char[] scriptEnd = "</script>".toCharArray();
-        // char[] styleStart = "<style".toCharArray();
-        // char[] styleEnd = "</style>".toCharArray();
-        // char[] selectStart = "<select".toCharArray();
-        // char[] selectEnd = "</select>".toCharArray();
-        //
-        // removeStarts = new BMSearch[] { BMSearch.getInstance(ifStart),
-        // BMSearch.getInstance(scriptStart),
-        // BMSearch.getInstance(styleStart), BMSearch.getInstance(selectStart)
-        // };
-        // removeEnds = new BMSearch[] { BMSearch.getInstance(ifEnd),
-        // BMSearch.getInstance(scriptEnd),
-        // BMSearch.getInstance(styleEnd), BMSearch.getInstance(selectEnd) };
+        // 去掉不需要的标签
         String[][] getUseleffTag = HtmlTagUselessEnum.GetUselessTag();
         removeStarts = new BMSearch[getUseleffTag.length];
         removeEnds = new BMSearch[getUseleffTag.length];
