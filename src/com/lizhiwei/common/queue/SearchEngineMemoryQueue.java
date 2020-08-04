@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
+ * 内存队列
  * @Author LiZhiWei
  * @Date 2020/7/23
  */

@@ -4,10 +4,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 对同步队列进一步封装
  * @Author LiZhiWei
  * @Date 2020/7/23
  */
 public class SearchEngineFileQueue implements SearchEngineQueue{
+
+    ConcurrentFileQueue queue;
+    int perMax; // 每次获取的数量
+
+    public SearchEngineFileQueue(String dir, String name, int perMax) {
+        this.queue = new ConcurrentFileQueue(dir, name);
+        this.perMax = perMax;
+    }
+    /**
+     * 获取队列
+     * @return
+     */
+    public ConcurrentFileQueue getQueue() {
+        return queue;
+    }
 
     @Override
     public void send(String url) {
@@ -36,21 +52,5 @@ public class SearchEngineFileQueue implements SearchEngineQueue{
         }
         return r;
     }
-
-    ConcurrentFileQueue queue;
-    int perMax;
-
-    public SearchEngineFileQueue(String dir, String name, int perMax) {
-        this.queue = new ConcurrentFileQueue(dir, name);
-        this.perMax = perMax;
-    }
-    /**
-     * 获取队列
-     * @return
-     */
-    public ConcurrentFileQueue getQueue() {
-        return queue;
-    }
-
 
 }

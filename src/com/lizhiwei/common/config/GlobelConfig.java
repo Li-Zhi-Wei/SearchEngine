@@ -98,11 +98,11 @@ public class GlobelConfig {
     /**
      * 分析队列的默认分隔符
      */
-    public static final String ANALYSE_QUEUE_SEPARATE = "==SEPARATE_JEvYgHAs_6reIN6zj==";// 随机字符串
+    public static final String ANALYSE_QUEUE_SEPARATE = "==SEPARATE_6reIN6zj==";// 随机字符串
     /**
      * 在格式化时候，分隔title、description等分隔符
      */
-    public static final String CONTENT_FORMAT_SEPARATE = "-=iZ2jS4Ie-=";// 随机字符串
+    public static final String CONTENT_FORMAT_SEPARATE = "==SEPARATE_iZ2jS4Ie==";// 随机字符串
     /**
      * 文件队列每次最大获取数量默认值
      */
