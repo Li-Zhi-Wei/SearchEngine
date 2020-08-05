@@ -10,7 +10,7 @@ import com.lizhiwei.common.util.SelfLogger;
  * @Author LiZhiWei
  * @Date 2020/7/21
  */
-public class MonitorThreadForFIleQueue {
+public class MonitorThreadForFIleQueue extends Thread {
     private long thresholdAnalyse;// 分析队列阈值
     private SearchEngineFileQueue queueAnalyse;
     private SearchEngineFileQueue queueLinks;
