@@ -14,8 +14,9 @@ import java.util.Arrays;
  */
 public class ResultMapping {
 
+    // 单词编号
     long wordId;
-
+    // html编号集合
     long[] htmls;
 
     public ResultMapping(String s) {
@@ -38,6 +39,7 @@ public class ResultMapping {
     public long[] getHtmls() {
         return htmls;
     }
+
     //测试用 输出信息
     public String parse(ACAutomaton acAllWords, ConcurrentFileQueue queueUrlId, SearchEngineFileQueue queueAnalyse)
             throws Exception {

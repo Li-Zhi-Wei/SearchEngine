@@ -3,7 +3,7 @@ package com.lizhiwei.common.io;
 import java.io.IOException;
 
 /**
- *
+ * 储存倒排索引文件
  * @Author LiZhiWei
  * @Date 2020/7/25
  */

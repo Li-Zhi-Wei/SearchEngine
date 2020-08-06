@@ -1,7 +1,7 @@
 package com.lizhiwei.query.entity;
 
 /**
- * URL的信息
+ * 查询结果信息处理
  * @Author LiZhiWei
  * @Date 2020/8/5
  */

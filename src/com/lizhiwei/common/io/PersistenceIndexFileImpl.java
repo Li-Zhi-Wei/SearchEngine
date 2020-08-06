@@ -9,6 +9,7 @@ import java.nio.channels.FileChannel;
 
 /**
  * 储存倒排索引文件实现类
+ * 索引的格式：1080[6, 65, 67, 84, 117, 127, 133] (词号[网页编号])
  * @Author LiZhiWei
  * @Date 2020/8/2
  */
@@ -56,6 +57,12 @@ public class PersistenceIndexFileImpl implements PersistenceIndex{
         return r;
     }
 
+    /**
+     * 读取，根据起止位置返回相应内容
+     * @param s
+     * @param e
+     * @return
+     */
     @Override
     public byte[] read(long s, long e) {
         byte[] bytes = null;

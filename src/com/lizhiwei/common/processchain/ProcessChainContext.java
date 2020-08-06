@@ -3,7 +3,7 @@ package com.lizhiwei.common.processchain;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 进程上下文
+ * 调用链上下文
  * @Author LiZhiWei
  * @Date 2020/7/21
  */

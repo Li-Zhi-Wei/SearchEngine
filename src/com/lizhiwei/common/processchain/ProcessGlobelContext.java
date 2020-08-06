@@ -4,14 +4,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 进程配置
+ * 爬虫、分析时全局上下文
  * @Author LiZhiWei
  * @Date 2020/7/20
  */
 public class ProcessGlobelContext {
+
+    // 当前进程运行状态
     private static AtomicInteger status = new AtomicInteger(0);
 
-    // map
+    // map 储存各种队列
     private static ConcurrentHashMap<String, Object> ctx = new ConcurrentHashMap<String, Object>();
 
     public static void put(String k, Object v) {
