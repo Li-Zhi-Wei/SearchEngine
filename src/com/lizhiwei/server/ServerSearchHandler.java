@@ -1,7 +1,7 @@
 package com.lizhiwei.server;
 
 import com.lizhiwei.common.config.GlobelConfig;
-import com.lizhiwei.main.QueryMain;
+import com.lizhiwei.query.QueryMain;
 import com.lizhiwei.query.entity.UrlInfo;
 
 import java.io.IOException;
