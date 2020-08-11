@@ -11,11 +11,13 @@
             margin: 0;
         }
 
-        #header, #header a {
-            color: white;
-            background-color: #12a7ff;
+        #header{
+            color: black;
+            /*background-color: #12a7ff;*/
             height: 60px;
             font-size: 32px;
+            margin-top: 60px;
+            text-align:center;
         }
 
         body {
@@ -38,7 +40,7 @@
 
         .search_form {
             position: relative;
-            width: 300px;
+            /*width: 300px;*/
             margin: 0 auto;
         }
 
@@ -55,52 +57,66 @@
 
         input {
             width: 100%;
-            height: 122px;
+            height: 44px;
             padding-left: 13px;
         }
 
         button {
-            height: 122px;
-            width: 82px;
+            height: 44px;
+            width: 108px;
             cursor: pointer;
             position: absolute;
         }
 
         /*搜索框7*/
         .bar7 .search_form {
-            height: 122px;
+            height: 44px;
         }
 
         .bar7 input {
-            width: 550px;
-            border-radius: 42px;
-            border: 2px solid #324B4E;
-            background: #F9F0DA;
-            transition: .3s linear;
+            /*width: 550px;*/
+            border-radius: 10px;
+            border: 2px solid #c4c7ce;
+            /*background: #f9f0da;*/
+            /*transition: .3s linear;*/
             float: right;
         }
 
-        .bar7 input:focus {
-            width: 650px;
+        .bar7 input:hover {
+            /*width: 650px;*/
+            border: 2px solid #a7aab5;
         }
 
         .bar7 button {
             background: none;
-            top: -2px;
-            right: 20px;
+            top: 0px;
+            right: 0px;
+            background: #4e6ef2;
+            border-radius: 0 10px 10px 0;
         }
 
         .bar7 button:before {
             content: "查找";
             font-family: FontAwesome;
-            color: black;
+            color: white;
         }
+
+        .bar7 button:hover {
+            background: #4662d9;
+        }
+
+        .describe {
+            font-size: 18px;
+            width: 800px;
+            margin-top: 80px;
+        }
+
     </style>
 </head>
 <body>
 
 <div id="header">
-    &nbsp;&nbsp; <a href="/index"> 搜索引擎DEMO</a>
+    &nbsp;&nbsp; <div>搜索引擎DEMO</div>
 </div>
 <br>
 <br>
@@ -114,6 +130,12 @@
                    name="crid">
             <button type="submit" id="search_submit_button" onclick="search()"></button>
         </div>
+    </div>
+
+    <div class="describe">
+        本页面用于项目功能演示，收录页面较少<br>
+        推荐关键词：云计算、区块链、原创博客、博客、CSDN学院<br>
+        项目地址：https://github.com/Li-Zhi-Wei/SearchEngine<br>
     </div>
 
 

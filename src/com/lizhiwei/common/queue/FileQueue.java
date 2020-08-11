@@ -18,7 +18,7 @@ public class FileQueue {
     // 队列路径
     private String fileDir = null;// 默认磁盘路径
     // 队列名，即文件名，暂时不考虑分文件保存。
-    private String queueName = fileDir + "\\default";
+    private String queueName = fileDir + "/default";
     // 采用byte数组保存主数据
     private String fileName = queueName + "_dat.bin";
     // 每两个long为一组保存
@@ -134,7 +134,7 @@ public class FileQueue {
      */
     private void init(String queueName) {
         this.queueName = queueName;
-        queueName = fileDir + "\\" + queueName;
+        queueName = fileDir + "/" + queueName;
         // 采用byte数组保存数据
         fileName = queueName + "_dat.bin";
         // 每两个long为一组保存

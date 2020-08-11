@@ -14,7 +14,7 @@ public class QueryMain {
      */
     public static void main(String[] args) throws Exception{
         com.lizhiwei.query.QueryMain.init();
-//        com.lizhiwei.query.QueryMain.checkAll(false);
+//        com.lizhiwei.query.QueryMain.checkAll(true);
         com.lizhiwei.query.QueryMain.queryAndPrint("开放平台服务");
     }
 }

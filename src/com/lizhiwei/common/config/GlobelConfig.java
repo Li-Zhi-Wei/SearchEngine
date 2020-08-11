@@ -60,15 +60,15 @@ public class GlobelConfig {
     /**
      * 默认的日志文件
      */
-    private static final String DEFAULT_LOG_PATH_FILE_NAME = "\\log\\demo_search_engine.log";
+    private static final String DEFAULT_LOG_PATH_FILE_NAME = "/log/demo_search_engine.log";
     /**
      * 持久化 偏移量文件名
      */
-    private static final String PERSISTENCE_FILE_OFFSET_FILE_NAME = "\\PERSISTENCE_OFF.bin";
+    private static final String PERSISTENCE_FILE_OFFSET_FILE_NAME = "/PERSISTENCE_OFF.bin";
     /**
      * 持久化 索引文件名
      */
-    private static final String PERSISTENCE_FILE_INDEX_FILE_NAME = "\\PERSISTENCE_IDX.bin";
+    private static final String PERSISTENCE_FILE_INDEX_FILE_NAME = "/PERSISTENCE_IDX.bin";
 
     /**
      * 首页HTML文件
